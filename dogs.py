@@ -5,6 +5,9 @@ from PIL import Image,ImageTk#чтобы обрабатывать изображ
 from io import BytesIO
 from  tkinter import messagebox as mb
 
+from bottle import response
+
+
 def show_image():
     image_url = get_dog_image() #получим ссылку на картинку с помощью другой функции
     if image_url:
@@ -14,13 +17,22 @@ def show_image():
             img_data = BytesIO(resource.content)#теперь по этой ссылке загрузили картинку в двоичном коде в переменную
             img = Image.open(img_data) #там картинка
             img.thumbnail((300,300))# размер подогнали 300 на 300
+            img = ImageTk.PhotoImage(img)
             label.config(image=img)
             label.image = img #сборщик мусора чтобы не удалил картинку
         except EXCEPTION as e:
-            mb.showerror ("ошибка",f"возникла ошибка {e}")
+            mb.showerror ("ошибка",f"возникла ошибка при загрузке изображения {e}")
 
 
-
+def get_dog_image(): # получить изображение
+    try:
+        response = requests.get("https://dog.ceo/api/breeds/image/random") #вернет json
+        response.raise_for_status()
+        data = response.json() #лежит ответ в формате json
+        return data("message") #строка с адресом картинки
+    except EXCEPTION as e:
+        mb.showerror("ошибка", f"возникла ошибка при запросе к API {e}")
+        return None
 
 
 
