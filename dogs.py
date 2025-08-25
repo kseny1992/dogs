@@ -17,10 +17,12 @@ def show_image():
             img_size = (int(width_spinbox.get()),int(height_spinbox.get()))
             img.thumbnail((img_size))# размер подогнали 300 на 300
             img = ImageTk.PhotoImage(img)
-            new_window = Toplevel(window)
-            new_window.title("случайное изображение")
-            lb = ttk.Label(new_window, image=img)
-            lb.pack()
+            #new_window = Toplevel(window)
+            #new_window.title("случайное изображение")
+            tab = ttk.Frame(notebook)
+            notebook.add(tab,text=f"изображение №{notebook.index('end')+1}")
+            lb = ttk.Label(tab, image=img)
+            lb.pack(padx=10,pady=10)
             lb.image = img #сборщик мусора чтобы не удалил картинку
         except Exception as e:  # Исправлено: EXCEPTION -> Exception
             mb.showerror ("ошибка",f"возникла ошибка при загрузке изображения {e}")
@@ -69,5 +71,11 @@ height_label.pack(side=LEFT, padx=(10,0))
 height_spinbox = ttk.Spinbox(frame, from_=200, to=500, increment=50, width=5)
 height_spinbox.set(300)  # Установлено значение по умолчанию
 height_spinbox.pack(side=LEFT, padx=(0,10))
+
+top_level_window = Toplevel(window)
+top_level_window.title("изображения собачек")
+
+notebook = ttk.Notebook(top_level_window)
+notebook.pack(expand=True, fill="both",padx=10,pady=10) #ЗАПОЛНИТЬ ПРОСТРАНСТВО
 
 window.mainloop()
