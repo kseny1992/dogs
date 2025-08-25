@@ -33,6 +33,9 @@ def get_dog_image(): # получить изображение
         response = requests.get("https://dog.ceo/api/breeds/image/random") #вернет json
         response.raise_for_status()
         data = response.json() #лежит ответ в формате json
+        print(data)
+        print(data['message'])
+        print(data['status'])
         return data["message"] #строка с адресом картинки
     except Exception as e:  # Исправлено: EXCEPTION -> Exception
         mb.showerror("ошибка", f"возникла ошибка при запросе к API {e}")
@@ -63,14 +66,16 @@ frame.pack(pady=10)
 width_label = ttk.Label(frame, text="ширина:")  # Исправлено: добавлен параметр text
 width_label.pack(side=LEFT, padx=(10,0))
 width_spinbox = ttk.Spinbox(frame, from_=200, to=500, increment=50, width=5)
-width_spinbox.set(300)  # Установлено значение по умолчанию
+
 width_spinbox.pack(side=LEFT, padx=(0,10))
+width_spinbox.set(300)  # Установлено значение по умолчанию
 
 height_label = ttk.Label(frame, text="высота")  # Исправлено: добавлен параметр text
 height_label.pack(side=LEFT, padx=(10,0))
 height_spinbox = ttk.Spinbox(frame, from_=200, to=500, increment=50, width=5)
-height_spinbox.set(300)  # Установлено значение по умолчанию
+
 height_spinbox.pack(side=LEFT, padx=(0,10))
+height_spinbox.set(300)  # Установлено значение по умолчанию
 
 top_level_window = Toplevel(window)
 top_level_window.title("изображения собачек")
